@@ -21,7 +21,7 @@ class CreateCores250520161911 extends Migration
             $table->text('boostname');
             $table->text('levels');
             $table->timestamps();
-            $table->integer('core_id')->uniqable();
+            $table->integer('core_id')->unique();
         });
     }
 
