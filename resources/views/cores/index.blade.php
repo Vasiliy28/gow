@@ -27,68 +27,31 @@
                 <th>event</th>
                 <th>slot</th>
                 <th>boostname</th>
-                <th>leavel</th>
+                @foreach($cores[0]->levels as $key =>$levels)
+                    <th>leavel {{++$key}}</th>
+                @endforeach
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>1,001</td>
-                <td>Lorem</td>
-                <td>ipsum</td>
-                <td>dolor</td>
-                <td>sit</td>
-                <td>sit</td>
-            </tr>
-            <tr>
-                <td>1,001</td>
-                <td>Lorem</td>
-                <td>ipsum</td>
-                <td>dolor</td>
-                <td>sit</td>
-                <td>sit</td>
-            </tr>
-            <tr>
-                <td>1,001</td>
-                <td>Lorem</td>
-                <td>ipsum</td>
-                <td>dolor</td>
-                <td>sit</td>
-                <td>sit</td>
-            </tr>
-            <tr>
-                <td>1,001</td>
-                <td>Lorem</td>
-                <td>ipsum</td>
-                <td>dolor</td>
-                <td>sit</td>
-                <td>sit</td>
-            </tr>
-            <tr>
-                <td>1,001</td>
-                <td>Lorem</td>
-                <td>ipsum</td>
-                <td>dolor</td>
-                <td>sit</td>
-                <td>sit</td>
-            </tr>
-            <tr>
-                <td>1,001</td>
-                <td>Lorem</td>
-                <td>ipsum</td>
-                <td>dolor</td>
-                <td>sit</td>
-                <td>sit</td>
-            </tr>
-            <tr>
-                <td>1,001</td>
-                <td>Lorem</td>
-                <td>ipsum</td>
-                <td>dolor</td>
-                <td>sit</td>
-                <td>sit</td>
-            </tr>
+            @foreach($cores as $core)
+                <tr>
+                    <td>{{$core->core_id}}</td>
+                    <td>{{$core->title}}</td>
+                    <td>{{$core->event}}</td>
+                    <td>{{$core->slot}}</td>
+                    <td>
+                        <ul>
+                            @foreach($core->boostname as $name)
+                            <li>{{$name}}</li>
+                            @endforeach
+                        </ul>
+                    </td>
+                    @foreach($core->levels as $level)
+                        <td>{{$level}}</td>
+                    @endforeach
+                </tr>
+            @endforeach
             </tbody>
         </table>
     </div>
-
 @endsection

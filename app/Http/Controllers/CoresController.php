@@ -19,25 +19,28 @@ class CoresController extends ParserController
 {
     public function getIndex()
     {
-        return view('cores/index');
+        $cores = $this->getAllCores();
+      
+        return view('cores/index')->with('cores',$cores);
     }
 
     public function postIndex()
     {
         FlashHelper::info('POST INDEX');
 
-
         $urls = $this->getAllUrls();
-
-        foreach ($urls as $key => $url){
-          $data = $this->getDateCoreByUrl($url);
-            
-            $core = new Cores();
+        foreach ($urls as $key => $url) {
+            $data = $this->getDateCoreByUrl($url);
+            $core = Cores::firstOrCreate(array('core_id' => $data['core_id']));
             $core->fill($data);
             $core->save();
         }
+        
+        $this->createJsonFile();
+        
+        $cores = $this->getAllCores();
 
-//      return view('cores/index');
+        return view('cores/index')->with('cores', $cores);
     }
 
     private function getAllUrls()
@@ -63,56 +66,98 @@ class CoresController extends ParserController
         $result = \phpQuery::newDocumentHTML($html);
 
         if ($result) {
-
             $elements = $result->find('a');
-
             foreach ($elements as $key => $element) {
                 $link = pq($element)->attr('href');
                 $urls[$key] = 'http://gow.help/en' . $link;
             }
-
         }
 
         \phpQuery::unloadDocuments();
-
         return $urls;
     }
 
     private function getDateCoreByUrl($url)
     {
 
-        $html = \Cache::rememberForever('core_' . $url, function() use ($url) {
+        $html = \Cache::rememberForever('core_' . $url, function () use ($url) {
             return file_get_contents($url);
         });
 
-         $result = \phpQuery::newDocumentHTML($html);
-         $image = $result->find('.detailImg img')->attr('data-img');
-         $table_detail = $result->find('.gemMainDetail');
-         $rows = $table_detail->find('tr');
-         $table_inf = $result->find('.eqInfoDiv table');
+        $result = \phpQuery::newDocumentHTML($html);
+        \phpQuery::unloadDocuments($html);
 
-         foreach ($table_inf->find('tr') as $key => $tr){
+        $table_detail = $result->find('.gemMainDetail');
+        $rows_getail = $table_detail->find('tr');
+        $images = 'http://gow.help' . $result->find('.detailImg img')->attr('data-img');
+        $table_inf = $result->find('.eqInfoDiv table');
+        $rows_info = $table_inf->find('tr');
 
-             $data['boostname'][$key] = pq($tr)->find('td')->eq(0)->text();
-             $data['levels'][$key][1] = pq($tr)->find('td')->eq(1)->text();
-             $data['levels'][$key][2] = pq($tr)->find('td')->eq(2)->text();
-             $data['levels'][$key][3] = pq($tr)->find('td')->eq(3)->text();
-             $data['levels'][$key][4] = pq($tr)->find('td')->eq(4)->text();
-             $data['levels'][$key][5] = pq($tr)->find('td')->eq(5)->text();
-             $data['levels'][$key][6] = pq($tr)->find('td')->eq(6)->text();
+        foreach ($rows_info as $key => $tr) {
 
-         }
+            foreach (pq($tr)->find('td') as $index => $td) {
+                if (!$index) {
+                    $data['boostname'][$key] = pq($td)->text();
+                    continue;
+                }
+                $data['levels'][$key][$index] = pq($td)->text();
+            }
 
-        foreach ($data['levels'] as $key => $level){
+
+        }
+
+        foreach ($data['levels'] as $key => $level) {
             $data['levels'][$key] = implode(",", $level);
         }
 
-         $data['title'] = $rows->eq(0)->find('td')->eq(1)->text();
-         $data['slot'] = $rows->eq(1)->find('td')->eq(1)->text();
-         $data['event'] = $rows->eq(3)->find('td')->eq(1)->text();
-         $data['images']='http://gow.help'. $image;
-         $data['core_id']=preg_replace("/[^0-9]/", '', $url);
+        foreach ($rows_getail as $row) {
+
+            $value = pq($row)->find('td')->eq(0)->text();
+
+            if (preg_match('/slot/i', $value)) {
+                $data['slot'] = pq($row)->find('td')->eq(1)->text();
+                continue;
+            }
+
+            if (preg_match('/event/i', $value)) {
+                $data['event'] = pq($row)->find('td')->eq(1)->text();
+                continue;
+            }
+
+        }
+
+        $data['title'] = pq($result)->find('.pageContent h1')->text();
+        $data['images'] = json_encode($images);
+        $data['levels'] = json_encode($data['levels']);
+        $data['boostname'] = json_encode($data['boostname']);
+        $data['core_id'] = preg_replace("/[^0-9]/", '', $url);
         return $data;
+
+    }
+
+    private function getAllCores(){
+
+        $cores = Cores::all();
+        foreach ($cores as $core) {
+            $core->boostname = json_decode($core->boostname);
+            $core->levels = json_decode($core->levels);
+           
+        }
+        
+
+        return $cores;
+    }
+
+    private function createJsonFile(){
+
+            $cores =  Cores::all();
+        
+            $coresJson = $cores->toJson();
+        $a = 1;
+            $fileName = time() . '_cores.json';
+            File::put(public_path('/storage/download/'.$fileName),$coresJson);
+
+
 
     }
 }
