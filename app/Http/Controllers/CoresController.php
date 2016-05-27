@@ -13,32 +13,37 @@ use App\Helpers\FlashHelper;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\File\File;
 
 
 class CoresController extends ParserController
 {
     public function getIndex()
     {
-        $cores = $this->getAllCores();
-      
-        return view('cores/index')->with('cores',$cores);
+        $cores = Cores::all();
+        return view('cores/index')->with('cores', $cores);
     }
 
     public function postIndex()
     {
-        FlashHelper::info('POST INDEX');
 
+        FlashHelper::info('POST INDEX');
         $urls = $this->getAllUrls();
+
         foreach ($urls as $key => $url) {
             $data = $this->getDateCoreByUrl($url);
+
             $core = Cores::firstOrCreate(array('core_id' => $data['core_id']));
             $core->fill($data);
+
             $core->save();
         }
-        
-        $this->createJsonFile();
-        
-        $cores = $this->getAllCores();
+
+        $cores = Cores::all();
+        $cores_json = $core->toJson();
+        Storage::disk('public_import')->put('cores.txt', $cores_json);
+
 
         return view('cores/index')->with('cores', $cores);
     }
@@ -96,11 +101,12 @@ class CoresController extends ParserController
         foreach ($rows_info as $key => $tr) {
 
             foreach (pq($tr)->find('td') as $index => $td) {
+
                 if (!$index) {
                     $data['boostname'][$key] = pq($td)->text();
                     continue;
                 }
-                $data['levels'][$key][$index] = pq($td)->text();
+                $data['levels'][$index][] = pq($td)->text();
             }
 
 
@@ -109,6 +115,7 @@ class CoresController extends ParserController
         foreach ($data['levels'] as $key => $level) {
             $data['levels'][$key] = implode(",", $level);
         }
+
 
         foreach ($rows_getail as $row) {
 
@@ -127,36 +134,15 @@ class CoresController extends ParserController
         }
 
         $data['title'] = pq($result)->find('.pageContent h1')->text();
-        $data['images'] = json_encode($images);
-        $data['levels'] = json_encode($data['levels']);
-        $data['boostname'] = json_encode($data['boostname']);
+        $data['images'] = $images;
         $data['core_id'] = preg_replace("/[^0-9]/", '', $url);
+
         return $data;
 
     }
 
-    private function getAllCores(){
-
-        $cores = Cores::all();
-        foreach ($cores as $core) {
-            $core->boostname = json_decode($core->boostname);
-            $core->levels = json_decode($core->levels);
-           
-        }
-        
-
-        return $cores;
-    }
-
-    private function createJsonFile(){
-
-            $cores =  Cores::all();
-        
-            $coresJson = $cores->toJson();
-        $a = 1;
-            $fileName = time() . '_cores.json';
-            File::put(public_path('/storage/download/'.$fileName),$coresJson);
-
+    public function import()
+    {
 
 
     }

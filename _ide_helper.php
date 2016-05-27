@@ -1,7 +1,7 @@
 <?php
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.2.32 on 2016-05-24.
+ * Generated for Laravel 5.2.32 on 2016-05-27.
  *
  * @author Barry vd. Heuvel <barryvdh@gmail.com>
  * @see https://github.com/barryvdh/laravel-ide-helper
@@ -21,6 +21,7 @@ namespace {
         public static function version(){
             return \Illuminate\Foundation\Application::version();
         }
+        
         
         /**
          * Run the given array of bootstrap classes.
@@ -11436,6 +11437,11 @@ namespace {
             //Method inherited from \DebugBar\DebugBar            
             return \Barryvdh\Debugbar\LaravelDebugbar::offsetUnset($key);
         }
+        
+    }
+
+
+    class FlashHelper extends \App\Helpers\FlashHelper{
         
     }
 

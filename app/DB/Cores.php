@@ -19,17 +19,8 @@ class Cores extends Parser
         'boostname'=>'array',
     ];
 
-    protected $appends = [
-        'title',
-        'images',
-        'event',
-        'slot',
-        'boostname',
-        'levels',
-        'core_id'
-    ];
-  
 
+ 
     protected $guarded = [
         'id',
         'created_at',

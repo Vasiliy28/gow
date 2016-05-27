@@ -62,6 +62,12 @@ return [
             'bucket' => 'your-bucket',
         ],
 
+        'public_import' => [
+            'driver' => 'local',
+            'root' => public_path("imports"),
+            'visibility' => 'public',
+        ],
+
     ],
 
 ];

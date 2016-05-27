@@ -17,6 +17,16 @@ $urls = config('urls');
 foreach ($urls as $url) {
     Route::get($url['url'], ['as' => 'get_' . $url['url'], 'uses' => $url['controller'] . '@getIndex']);
     Route::post($url['url'], ['as' => 'post_' . $url['url'], 'uses' => $url['controller'] . '@postIndex']);
+
+
+    Route::get($url['url'].'/import', [
+        'as' => 'import_' . $url['url'],
+        
+        'uses' => $url['controller'] . '@import',
+        
+        function () use ($url) {
+            \View::share('route_to_import', 'import_' . $url['url']);
+        }]);
 }
 
 

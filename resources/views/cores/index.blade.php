@@ -1,35 +1,27 @@
 @extends('app')
 
-@section('content')
+@section('content');
 
     <h1 class="page-header">Cores</h1>
 
-    <div class="btn-group">
-        <form method="post">
-            <input type="hidden" name="_token" value="{{csrf_token()}}">
-            <button type="submit" class="btn btn-primary btn-large btm-custom" >
-                <i class="fa fa-refresh" aria-hidden="true"></i>Parse
-            </button>
-        </form>
 
-        {{--<button href="#" class="btn btn-danger btn-large btm-custom disabled">--}}
-            {{--<i class="fa fa-download" aria-hidden="true"></i>Impoart--}}
-        {{--</button>--}}
+    @include('widgets._url_form', ['route_to_import' => 'import_cores'])
 
-    </div>
     <h2 class="sub-header">Section title</h2>
     <div class="table-responsive">
-        <table class="table table-striped">
+        <table class="table table-striped table-bordered table-condensed">
             <thead>
             <tr>
                 <th>#</th>
-                <th>title</th>
-                <th>event</th>
-                <th>slot</th>
-                <th>boostname</th>
-                @foreach($cores[0]->levels as $key =>$levels)
-                    <th>leavel {{++$key}}</th>
+                <th width="180px">title</th>
+                <th width="100px">event</th>
+                <th width="100px">slot</th>
+                <th width="280px">boostname</th>
+
+                @foreach($cores[0]->levels as $i => $level)
+                    <th>level {{$i++}}</th>
                 @endforeach
+
             </tr>
             </thead>
             <tbody>
@@ -42,13 +34,13 @@
                     <td>
                         <ul>
                             @foreach($core->boostname as $name)
-                            <li>{{$name}}</li>
+                                <li>{{$name}}</li>
                             @endforeach
                         </ul>
                     </td>
-                    @foreach($core->levels as $level)
-                        <td>{{$level}}</td>
-                    @endforeach
+                    {{--@foreach($core->levels as $level)--}}
+                        {{--<td>{{$level}}</td>--}}
+                    {{--@endforeach--}}
                 </tr>
             @endforeach
             </tbody>

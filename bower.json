@@ -17,6 +17,7 @@
   ],
   "dependencies": {
     "bootstrap": "^3.3.6",
-    "font-awesome": "fontawesome#^4.6.3"
+    "font-awesome": "fontawesome#^4.6.3",
+    "datatables": "DataTables#^1.10.12"
   }
 }

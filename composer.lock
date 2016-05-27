@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f8c0cbb3c7f9291e6e2eb03ddd948fb3",
-    "content-hash": "95211e68e5138e6d786b8d47847f5f3a",
+    "hash": "e8399802b0f78986b25b87e007108c3e",
+    "content-hash": "8d625a5168b5689808cccb5601b2acc8",
     "packages": [
         {
             "name": "barryvdh/laravel-debugbar",
@@ -1448,6 +1448,55 @@
             "description": "Symfony EventDispatcher Component",
             "homepage": "https://symfony.com",
             "time": "2016-05-05 06:56:13"
+        },
+        {
+            "name": "symfony/filesystem",
+            "version": "v3.0.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/filesystem.git",
+                "reference": "74fec3511b62cb934b64bce1d96f06fffa4beafd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/filesystem/zipball/74fec3511b62cb934b64bce1d96f06fffa4beafd",
+                "reference": "74fec3511b62cb934b64bce1d96f06fffa4beafd",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.9"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Filesystem\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Filesystem Component",
+            "homepage": "https://symfony.com",
+            "time": "2016-04-12 18:09:53"
         },
         {
             "name": "symfony/finder",
