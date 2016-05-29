@@ -25,6 +25,7 @@ class MaterialsController extends ParserController
     public function postIndex()
     {
         $urls = $this->getAllUrls();
+        
         foreach ($urls as $url) {
             $data = $this->getDateCoreByUrl($url);
             $materials = Materials::firstOrCreate(array('material_id' => $data['material_id']));

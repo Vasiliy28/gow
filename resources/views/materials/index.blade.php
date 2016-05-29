@@ -23,6 +23,7 @@
                     <tr>
                         <td>{{$material->material_id}}</td>
                         <td>
+
                             {{$material->title}}
                             <img src="{{$material->images}}" >
                         </td>
