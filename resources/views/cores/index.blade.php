@@ -1,11 +1,11 @@
 @extends('app')
 @section('content')
-    <h1 class="page-header">Cores</h1>
+    <h1 class="page-header">Core</h1>
 
 
     @include('widgets._url_form', ['file_path' => file_exists(public_path() . CoresController::FILE_PATH) ? CoresController::FILE_PATH : null])
 
-    <h2 class="sub-header">Section title</h2>
+    <h2 class="sub-header">Cores:</h2>
     <div class="table-responsive">
         <table class="table table-striped table-bordered table-condensed">
             <thead>

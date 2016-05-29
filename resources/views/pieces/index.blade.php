@@ -2,85 +2,57 @@
 
 @section('content')
 
-    <h1 class="page-header">Cores</h1>
+    <h1 class="page-header">Piece</h1>
 
-    <div class="btn-group">
-        <a href="#" class="btn btn-primary btn-large btm-custom"><i class="fa fa-refresh"
-                                                                    aria-hidden="true"></i>Parse</a>
-        <a href="#" class="btn btn-danger btn-large btm-custom disabled"><i class="fa fa-download"
-                                                                            aria-hidden="true"></i>Impoart</a>
+    @include('widgets._url_form', ['file_path' => file_exists(public_path() . PiecesController::FILE_PATH) ? PiecesController::FILE_PATH : null])
 
-    </div>
-    <h2 class="sub-header">Section title</h2>
+    <h2 class="sub-header">Pieces :</h2>
     <div class="table-responsive">
-        <table class="table table-striped">
+        <table class="table table-striped table-bordered table-condensed">
             <thead>
             <tr>
                 <th>#</th>
-                <th>title</th>
-                <th>event</th>
-                <th>slot</th>
-                <th>boostname</th>
-                <th>leavel</th>
+                <th width="180px">title</th>
+                <th width="100px">event</th>
+                <th width="270px">boostname</th>
+
+                @if($pieces && !$pieces->isEmpty())
+                    @foreach($pieces[0]->levels as $i => $level)
+                        <th width="130px">level {{$i++}}</th>
+                    @endforeach
+                @endif
+
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>1,001</td>
-                <td>Lorem</td>
-                <td>ipsum</td>
-                <td>dolor</td>
-                <td>sit</td>
-                <td>sit</td>
-            </tr>
-            <tr>
-                <td>1,001</td>
-                <td>Lorem</td>
-                <td>ipsum</td>
-                <td>dolor</td>
-                <td>sit</td>
-                <td>sit</td>
-            </tr>
-            <tr>
-                <td>1,001</td>
-                <td>Lorem</td>
-                <td>ipsum</td>
-                <td>dolor</td>
-                <td>sit</td>
-                <td>sit</td>
-            </tr>
-            <tr>
-                <td>1,001</td>
-                <td>Lorem</td>
-                <td>ipsum</td>
-                <td>dolor</td>
-                <td>sit</td>
-                <td>sit</td>
-            </tr>
-            <tr>
-                <td>1,001</td>
-                <td>Lorem</td>
-                <td>ipsum</td>
-                <td>dolor</td>
-                <td>sit</td>
-                <td>sit</td>
-            </tr>
-            <tr>
-                <td>1,001</td>
-                <td>Lorem</td>
-                <td>ipsum</td>
-                <td>dolor</td>
-                <td>sit</td>
-                <td>sit</td>
-            </tr>
-            <tr>
-                <td>1,001</td>
-                <td>Lorem</td>
-                <td>ipsum</td>
-                <td>dolor</td>
-                <td>sit</td>
-                <td>sit</td>
-            </tr>
+            @if($pieces && !$pieces->isEmpty())
+                @foreach($pieces as $piece)
+                    <tr>
+                        <td>{{$piece->piece_id}}</td>
+                        <td>{{$piece->title }}
+                        <img src="{{$piece->images}}">
+                        </td>
+                        <td>{{$piece->event}}</td>
+                        <td>
+                            <ul>
+                                @foreach($piece->boostname as $name)
+                                    <li>{{$name}}</li>
+                                @endforeach
+                            </ul>
+                        </td>
+                        @foreach($piece->levels as $level)
+                            <?php $level = explode(",", $level)?>
+                            <td>
+                                <ul class="level">
+                                    @foreach($level as $item)
+                                        <li>{{$item}}</li>
+                                    @endforeach
+                                </ul>
+                            </td>
+                        @endforeach
+                    </tr>
+                @endforeach
+            @endif
             </tbody>
         </table>
     </div>

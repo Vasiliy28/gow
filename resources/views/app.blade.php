@@ -40,8 +40,6 @@
                         </a>
                     </li>
                 @endforeach
-                fore
-
             </ul>
         </div>
     </div>

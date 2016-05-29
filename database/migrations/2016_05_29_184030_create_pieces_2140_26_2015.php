@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePieces231246 extends Migration
+class CreatePieces2140262015 extends Migration
 {
     /**
      * Run the migrations.
@@ -18,9 +18,12 @@ class CreatePieces231246 extends Migration
             $table->text('images');
             $table->string('event', 255);
             $table->text('boostname');
-            $table->text('leavel');
+            $table->text('levels');
             $table->timestamps();
+            $table->integer('piece_id')->unique();
         });
+        
+        
     }
 
     /**

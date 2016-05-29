@@ -1,21 +1,21 @@
 <?php
+
 namespace App\DB;
 
-class Pieces extends Parser
+
+class Materials extends Parser
 {
     protected $fillable = [
         'title',
         'images',
         'event',
-        'boostname',
-        'levels',
-        'piece_id'
+        'used',
+        'material_id',
     ];
 
     protected $casts = [
         'images' => 'array',
-        'levels' => 'array',
-        'boostname'=>'array',
+        'used'=>'array',
     ];
 
 
@@ -25,6 +25,5 @@ class Pieces extends Parser
         'created_at',
         'updated_at'
     ];
-
 
 }

@@ -9,5 +9,12 @@ return [
         'url'=>'pieces',
         'name' => 'Pieces',
         'controller' => 'PiecesController',
+    ],
+
+    [
+        'url'=>'materials',
+        'name' => 'Materials',
+        'controller' => 'MaterialsController',
     ]
+
 ];

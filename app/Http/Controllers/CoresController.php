@@ -27,7 +27,7 @@ class CoresController extends ParserController
    public function getIndex()
     {
         $cores = Cores::all();
-        return view('cores/index')->with('cores', !$cores->isEmpty() ? $cores : null);
+        return view('cores/index')->with('cores', !$cores->isEmpty() ? $cores : "");
     }
 
     public function postIndex()
@@ -49,6 +49,7 @@ class CoresController extends ParserController
         return view('cores/index')->with('cores', $cores);
 
     }
+    
     private function getAllUrls()
     {
         $url = 'http://gow.help/templates/gow/ajax/findEquipment2/';
@@ -136,12 +137,10 @@ class CoresController extends ParserController
 
         }
 
-
         $data['title'] = pq($result)->find('.pageContent h1')->text();
         $data['images'] = $images;
         $data['core_id'] = preg_replace("/[^0-9]/", '', $url);
 
-        $a = 1;
         return $data;
 
     }
