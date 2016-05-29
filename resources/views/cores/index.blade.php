@@ -3,7 +3,7 @@
     <h1 class="page-header">Cores</h1>
 
 
-    @include('widgets._url_form', ['route_to_import' => 'import_cores'])
+    @include('widgets._url_form', ['file_path' => file_exists(public_path() . CoresController::FILE_PATH) ? CoresController::FILE_PATH : null])
 
     <h2 class="sub-header">Section title</h2>
     <div class="table-responsive">
@@ -14,20 +14,23 @@
                 <th width="180px">title</th>
                 <th width="100px">event</th>
                 <th width="100px">slot</th>
-                <th width="280px">boostname</th>
+                <th width="270px">boostname</th>
 
                 @if($cores && !$cores->isEmpty())
                     @foreach($cores[0]->levels as $i => $level)
-                        <th>level {{$i++}}</th>
+                        <th width="130px">level {{$i++}}</th>
                     @endforeach
                 @endif
+
             </tr>
             </thead>
             <tbody> @if($cores && !$cores->isEmpty())
                 @foreach($cores as $core)
                     <tr>
                         <td>{{$core->core_id}}</td>
-                        <td>{{$core->title}}</td>
+                        <td>{{$core->title }}
+                            <img src="{{$core->images}}">
+                        </td>
                         <td>{{$core->event}}</td>
                         <td>{{$core->slot}}</td>
                         <td>
@@ -37,9 +40,16 @@
                                 @endforeach
                             </ul>
                         </td>
-                        {{--@foreach($core->levels as $level)--}}
-                        {{--<td>{{$level}}</td>--}}
-                        {{--@endforeach--}}
+                        @foreach($core->levels as $level)
+                            <?php $level = explode(",", $level)?>
+                        <td>
+                            <ul class="level">
+                                @foreach($level as $item)
+                                    <li>{{$item}}</li>
+                                @endforeach
+                            </ul>
+                        </td>
+                        @endforeach
                     </tr>
                 @endforeach
             @endif

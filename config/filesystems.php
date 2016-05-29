@@ -65,7 +65,6 @@ return [
         'public_import' => [
             'driver' => 'local',
             'root' => public_path("imports"),
-            'visibility' => 'public',
         ],
 
     ],

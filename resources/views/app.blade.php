@@ -53,8 +53,9 @@
             <h1 class="page-header">Url`s</h1>
             <ul class="nav nav-sidebar">
                 @foreach(config('urls') as $url)
-                    <li class=" {{Request::is($url['url']) ? "active" : ""}} "><a
-                                href="{{$url['url']}}">{{$url['name']}}</a></li>
+                    <li class=" {{request()->is($url['url']) ? "active" : ""}} ">
+                        <a href="{{$url['url']}}">{{$url['name']}}</a>
+                    </li>
                 @endforeach
             </ul>
         </div>

@@ -210,7 +210,7 @@ return [
 
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'FlashHelper' => App\Helpers\FlashHelper::class,
-
+        'CoresController' => \App\Http\Controllers\CoresController::class,
     ],
 
 ];

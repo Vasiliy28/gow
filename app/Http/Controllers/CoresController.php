@@ -20,7 +20,11 @@ use Symfony\Component\HttpFoundation\File\File;
 
 class CoresController extends ParserController
 {
-    public function getIndex()
+    
+    const FILE_NAME = 'cores.txt';
+    const FILE_PATH = '/imports/' . self::FILE_NAME;
+    
+   public function getIndex()
     {
         $cores = Cores::all();
         return view('cores/index')->with('cores', !$cores->isEmpty() ? $cores : null);
@@ -29,7 +33,6 @@ class CoresController extends ParserController
     public function postIndex()
     {
         FlashHelper::info('POST INDEX');
-
         $urls = $this->getAllUrls();
         foreach ($urls as $key => $url) {
             $data = $this->getDateCoreByUrl($url);
@@ -39,8 +42,10 @@ class CoresController extends ParserController
         }
 
         $cores = Cores::all();
-        $cores_json = $core->toJson();
-        Storage::disk('public_import')->put('cores.txt', $cores_json);
+        $cores_json = $cores->toJson();
+        $file = public_path() ."/cores.txt";
+        Storage::disk('public_import')->put(self::FILE_NAME, $cores_json);
+        
         return view('cores/index')->with('cores', $cores);
 
     }
@@ -84,6 +89,8 @@ class CoresController extends ParserController
         $html = \Cache::rememberForever('core_' . $url, function () use ($url) {
             return file_get_contents($url);
         });
+//        $html = file_get_contents($url);
+
 
         $result = \phpQuery::newDocumentHTML($html);
         \phpQuery::unloadDocuments($html);

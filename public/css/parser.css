@@ -103,5 +103,24 @@ body {
     min-width: 220px;
 }
 
+ul {
+    padding:0;
+}
+
+ul li {
+    list-style: decimal inside;
+    white-space:nowrap;
+}
+
+table ul li:nth-child(odd){
+    background: #DEDEDE;
+    color: black;
+}
+
+ul.level li{
+    list-style: none;
+}
+
+
 
 
