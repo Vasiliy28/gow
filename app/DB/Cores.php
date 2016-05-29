@@ -26,4 +26,6 @@ class Cores extends Parser
         'created_at',
         'updated_at'
     ];
+
+  
 }

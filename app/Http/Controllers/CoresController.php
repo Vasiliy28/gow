@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: user
@@ -22,32 +23,27 @@ class CoresController extends ParserController
     public function getIndex()
     {
         $cores = Cores::all();
-        return view('cores/index')->with('cores', $cores);
+        return view('cores/index')->with('cores', !$cores->isEmpty() ? $cores : null);
     }
 
     public function postIndex()
     {
-
         FlashHelper::info('POST INDEX');
-        $urls = $this->getAllUrls();
 
+        $urls = $this->getAllUrls();
         foreach ($urls as $key => $url) {
             $data = $this->getDateCoreByUrl($url);
-
             $core = Cores::firstOrCreate(array('core_id' => $data['core_id']));
             $core->fill($data);
-
             $core->save();
         }
 
         $cores = Cores::all();
         $cores_json = $core->toJson();
         Storage::disk('public_import')->put('cores.txt', $cores_json);
-
-
         return view('cores/index')->with('cores', $cores);
-    }
 
+    }
     private function getAllUrls()
     {
         $url = 'http://gow.help/templates/gow/ajax/findEquipment2/';
@@ -56,7 +52,6 @@ class CoresController extends ParserController
             'catch' => 0,
             'type[]' => 1,
         ];
-
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, 1);
@@ -78,13 +73,14 @@ class CoresController extends ParserController
             }
         }
 
+
+
         \phpQuery::unloadDocuments();
         return $urls;
     }
 
     private function getDateCoreByUrl($url)
     {
-
         $html = \Cache::rememberForever('core_' . $url, function () use ($url) {
             return file_get_contents($url);
         });
@@ -95,6 +91,7 @@ class CoresController extends ParserController
         $table_detail = $result->find('.gemMainDetail');
         $rows_getail = $table_detail->find('tr');
         $images = 'http://gow.help' . $result->find('.detailImg img')->attr('data-img');
+
         $table_inf = $result->find('.eqInfoDiv table');
         $rows_info = $table_inf->find('tr');
 
@@ -116,7 +113,6 @@ class CoresController extends ParserController
             $data['levels'][$key] = implode(",", $level);
         }
 
-
         foreach ($rows_getail as $row) {
 
             $value = pq($row)->find('td')->eq(0)->text();
@@ -133,17 +129,14 @@ class CoresController extends ParserController
 
         }
 
+
         $data['title'] = pq($result)->find('.pageContent h1')->text();
         $data['images'] = $images;
         $data['core_id'] = preg_replace("/[^0-9]/", '', $url);
 
+        $a = 1;
         return $data;
 
     }
 
-    public function import()
-    {
-
-
-    }
 }

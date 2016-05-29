@@ -32,13 +32,16 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right hidden-lg hidden-md">
+
                 @foreach(config('urls') as $url)
-                    <li class=" {{Request::is($url['url']) ? "active" : ""}} " >
+                    <li class=" {{Request::is($url['url']) ? "active" : ""}} ">
                         <a href="{{$url['url']}}">
                             {{$url['name']}}
                         </a>
                     </li>
                 @endforeach
+                fore
+
             </ul>
         </div>
     </div>
@@ -50,7 +53,8 @@
             <h1 class="page-header">Url`s</h1>
             <ul class="nav nav-sidebar">
                 @foreach(config('urls') as $url)
-                    <li class=" {{Request::is($url['url']) ? "active" : ""}} " ><a href="{{$url['url']}}">{{$url['name']}}</a></li>
+                    <li class=" {{Request::is($url['url']) ? "active" : ""}} "><a
+                                href="{{$url['url']}}">{{$url['name']}}</a></li>
                 @endforeach
             </ul>
         </div>
@@ -60,7 +64,6 @@
         </div>
     </div>
 </div>
-
 
 
 @yield('local_js')
