@@ -4,7 +4,7 @@
 
     <h1 class="page-header">Piece</h1>
 
-    @include('widgets._url_form', ['file_path' => file_exists(public_path() . PiecesController::FILE_PATH) ? PiecesController::FILE_PATH : null])
+    @include('widgets._url_form', ['file_path' => file_exists(public_path("imports/") . PiecesController::FILE_NAME) ? "imports/" . PiecesController::FILE_NAME : null])
 
     <h2 class="sub-header">Pieces :</h2>
     <div class="table-responsive">

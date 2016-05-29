@@ -17,8 +17,6 @@ use Illuminate\Support\Facades\Storage;
 class PiecesController extends ParserController
 {
     const FILE_NAME = 'pieces.txt';
-    const FILE_PATH = '/imports/' . self::FILE_NAME;
-    
     public function getIndex()
     {
         $pieces = Pieces::all();
@@ -118,10 +116,9 @@ class PiecesController extends ParserController
         foreach ($rows_detail as $row) {
 
             $value = pq($row)->find('td')->eq(0)->text();
-
             if (preg_match('/event/i', $value)) {
                 $data['event'] = pq($row)->find('td')->eq(1)->text();
-                continue;
+                break;
             }
 
         }

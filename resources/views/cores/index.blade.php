@@ -3,7 +3,7 @@
     <h1 class="page-header">Core</h1>
 
 
-    @include('widgets._url_form', ['file_path' => file_exists(public_path() . CoresController::FILE_PATH) ? CoresController::FILE_PATH : null])
+    @include('widgets._url_form', ['file_path' => file_exists(public_path("imports/") . CoresController::FILE_NAME) ? "imports/" . CoresController::FILE_NAME : null])
 
     <h2 class="sub-header">Cores:</h2>
     <div class="table-responsive">

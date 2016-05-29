@@ -212,6 +212,7 @@ return [
         'FlashHelper' => App\Helpers\FlashHelper::class,
         'CoresController' => \App\Http\Controllers\CoresController::class,
         'PiecesController' =>\App\Http\Controllers\PiecesController::class,
+        'MaterialsController' => \App\Http\Controllers\MaterialsController::class,
     ],
 
 ];

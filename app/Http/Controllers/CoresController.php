@@ -22,9 +22,7 @@ class CoresController extends ParserController
 {
     
     const FILE_NAME = 'cores.txt';
-    const FILE_PATH = '/imports/' . self::FILE_NAME;
-    
-   public function getIndex()
+    public function getIndex()
     {
         $cores = Cores::all();
         return view('cores/index')->with('cores', !$cores->isEmpty() ? $cores : "");
@@ -43,7 +41,7 @@ class CoresController extends ParserController
 
         $cores = Cores::all();
         $cores_json = $cores->toJson();
-        $file = public_path() ."/cores.txt";
+      
         Storage::disk('public_import')->put(self::FILE_NAME, $cores_json);
         
         return view('cores/index')->with('cores', $cores);
@@ -97,7 +95,7 @@ class CoresController extends ParserController
         \phpQuery::unloadDocuments($html);
 
         $table_detail = $result->find('.gemMainDetail');
-        $rows_getail = $table_detail->find('tr');
+        $rows_detail = $table_detail->find('tr');
         $images = 'http://gow.help' . $result->find('.detailImg img')->attr('data-img');
 
         $table_inf = $result->find('.eqInfoDiv table');
@@ -121,7 +119,7 @@ class CoresController extends ParserController
             $data['levels'][$key] = implode(",", $level);
         }
 
-        foreach ($rows_getail as $row) {
+        foreach ($rows_detail as $row) {
 
             $value = pq($row)->find('td')->eq(0)->text();
 
