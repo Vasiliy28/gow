@@ -25,13 +25,10 @@ class CoresController extends ParserController
 
     public function getIndex()
     {
-        $cores = '';
         $cores = Cores::all();
-        $data = [
-            'cores' => $cores && !$cores->isEmpty() ? $cores : "",
-            'file_path' => parent::getFilePath(self::FILE_NAME)
-        ];
-        return view('cores/index' , $data);
+        \View::share( 'file_path', $this->getFilePath(self::FILE_NAME) );
+        \View::share('cores', $cores);
+        return view('cores/index');
     }
 
     public function postIndex()

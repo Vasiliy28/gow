@@ -16,33 +16,31 @@
                 <th width="100px">slot</th>
                 <th width="270px">boostname</th>
 
-                @if(isset($cores) && !$cores->isEmpty() && $cores[0]->levels)
+                @if (isset( $cores[0] ) &&  is_array($cores[0]->levels))
                     @foreach($cores[0]->levels as $i => $level)
                         <th width="130px">level {{$i++}}</th>
                     @endforeach
                 @endif
-
             </tr>
             </thead>
             <tbody>
-            @if(isset($cores) && !$cores->isEmpty())
-                @foreach($cores as $core)
-                    <tr>
-                        <td>{{$core->id}}</td>
-                        <td>{{$core->title }}
-                            <img src="{{$core->images}}">
-                        </td>
-                        <td>{{$core->event}}</td>
-                        <td>{{$core->slot}}</td>
-                        <td>
-                            <ul>
-                                @foreach($core->boostname as $name)
-                                    <li>{{$name}}</li>
-                                @endforeach
-                            </ul>
-                        </td>
-                        @foreach($core->levels as $level)
-                            <?php $level = explode(",", $level)?>
+            @foreach($cores as $core)
+                <tr>
+                    <td>{{$core->id}}</td>
+                    <td>{{$core->title }}
+                        <img src="{{$core->images}}">
+                    </td>
+                    <td>{{$core->event}}</td>
+                    <td>{{$core->slot}}</td>
+                    <td>
+                        <ul>
+                            @foreach($core->boostname as $name)
+                                <li>{{$name}}</li>
+                            @endforeach
+                        </ul>
+                    </td>
+                    @foreach($core->levels as $level)
+                        <?php $level = explode(",", $level)?>
                         <td>
                             <ul class="level">
                                 @foreach($level as $item)
@@ -50,10 +48,9 @@
                                 @endforeach
                             </ul>
                         </td>
-                        @endforeach
-                    </tr>
-                @endforeach
-            @endif
+                    @endforeach
+                </tr>
+            @endforeach
             </tbody>
         </table>
     </div>
