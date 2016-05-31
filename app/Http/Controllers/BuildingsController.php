@@ -10,6 +10,7 @@ namespace App\Http\Controllers;
 
 
 use App\DB\Buildings;
+use App\Helpers\FlashHelper;
 
 class BuildingsController extends ParserController
 {
@@ -33,7 +34,7 @@ class BuildingsController extends ParserController
         $buildings = Buildings::all();
         $urls = $this->getAllUrls();
 
-        if($urls && in_array($urls)) {
+        if($urls && is_array($urls)) {
             foreach ($urls as $key => $url) {
                 if($key >14){
                     break;
@@ -41,26 +42,20 @@ class BuildingsController extends ParserController
                 $this->getDataBuildingByUrl($url);
             }
         }
-        
-
-
+        FlashHelper::info("Parse Ok");
         $data = [
             'buildings' => $buildings && !$buildings->isEmpty() ? $buildings : "",
             'file_path' => parent::getFilePath(self::FILE_NAME)
         ];
         return view('cores.index', $data);
-        
     }
 
     public function getDataBuildingByUrl($url)
     {
         $data = [];
-        $html = \Cache::rememberForever('material_' . $url, function () use ($url) {
+        $html = \Cache::rememberForever('building_' . $url, function () use ($url) {
             return file_get_contents($url);
         });
-
-
-
     }
 
     private function getAllUrls()
@@ -81,7 +76,6 @@ class BuildingsController extends ParserController
         }
 
         \phpQuery::unloadDocuments();
-        
 
         return $urls;
     }
