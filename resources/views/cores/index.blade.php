@@ -16,11 +16,9 @@
                 <th width="100px">slot</th>
                 <th width="270px">boostname</th>
 
-                @if (isset( $cores[0] ) &&  is_array($cores[0]->levels))
-                    @foreach($cores[0]->levels as $i => $level)
-                        <th width="130px">level {{$i++}}</th>
-                    @endforeach
-                @endif
+                @foreach($cores[0]->levels as $i => $level)
+                    <th width="130px">level {{$i++}}</th>
+                @endforeach
             </tr>
             </thead>
             <tbody>
