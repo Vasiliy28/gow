@@ -9,7 +9,7 @@
     </div>
 
     <div class="col-md-3 col-sm-6">
-        <a download href="{{$file_path !== null ? $file_path : ""}}"class="{{$file_path == null ? "disabled" : ""}} btn btn-danger btn-large btm-custom ">
+        <a download href="{{isset($file_path) && $file_path ? $file_path : ""}}" class="{{isset($file_path) && $file_path  ? "" : "disabled"}} btn btn-danger btn-large btm-custom ">
             <i class="fa fa-download" aria-hidden="true"></i>Impoart
         </a>
     </div>

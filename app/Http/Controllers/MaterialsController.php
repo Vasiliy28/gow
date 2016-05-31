@@ -18,25 +18,43 @@ class MaterialsController extends ParserController
 
     public function getIndex()
     {
+        $materials = '';
         $materials = Materials::all();
-        return view('materials.index')->with('materials',!$materials->isEmpty() ? $materials : '');
+        $data = [
+            'materials' => $materials && !$materials->isEmpty() ? $materials : '',
+            'file_path' => parent::getFilePath(self::FILE_NAME) ,
+        ];
+        return view('materials.index', $data);
     }
 
     public function postIndex()
     {
+        $materials = '';
         $urls = $this->getAllUrls();
         
-        foreach ($urls as $url) {
-            $data = $this->getDateCoreByUrl($url);
-            $materials = Materials::firstOrCreate(array('material_id' => $data['material_id']));
-            $materials->fill($data);
-            $materials->save();
+        foreach ($urls as $key => $url) {
+
+            if($key > 15) {
+                break;
+            }
+            $data = $this->getDataMaterialByUrl($url);
+            
+            if( ! $material = Materials::find($data['id'])) {
+                $material = new Materials();
+            }
+            
+            $material->fill($data);
+            $material->save();
         }
         $materials = Materials::all();
         $materials_json = $materials->toJson();
         Storage::disk('public_import')->put(self::FILE_NAME , $materials_json);
-        
-        return view('materials.index')->with('materials',!$materials->isEmpty() ? $materials : '');
+
+        $data = [
+            'materials' => $materials && !$materials->isEmpty() ? $materials : '',
+            'file_path' => parent::getFilePath(self::FILE_NAME) ,
+        ];
+        return view('materials.index', $data);
     }
     private function getAllUrls()
     {
@@ -54,13 +72,15 @@ class MaterialsController extends ParserController
                 $urls[$key] = 'http://gow.help' . $link;
             }
         }
-         return $urls;
+
+        return $urls;
 
     }
 
-    private function getDateCoreByUrl($url)
+    private function getDataMaterialByUrl($url)
     {
-        $html = \Cache::rememberForever('core_' . $url, function () use ($url) {
+        $data = [];
+        $html = \Cache::rememberForever('material_' . $url, function () use ($url) {
             return file_get_contents($url);
         });
 //        $html = file_get_contents($url);
@@ -86,7 +106,7 @@ class MaterialsController extends ParserController
         }
         $data['title'] = $title;
         $data['images'] = $images;
-        $data['material_id'] = preg_replace("/[^0-9]/", '', $url);
+        $data['id'] = preg_replace("/[^0-9]/", '', $url);
         return $data;
 
 

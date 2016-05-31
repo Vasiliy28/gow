@@ -3,7 +3,7 @@
     <h1 class="page-header">Material</h1>
 
     {{--file_exists(public_path() . CoresController::FILE_PATH) ? CoresController::FILE_PATH : null--}}
-    @include('widgets._url_form', ['file_path' => file_exists(public_path("imports/") . \MaterialsController::FILE_NAME) ? "imports/" . MaterialsController::FILE_NAME : null ])
+    @include('widgets._url_form')
 
     <h2 class="sub-header">Materials:</h2>
     <div class="table-responsive">

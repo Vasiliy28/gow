@@ -19,26 +19,47 @@ class PiecesController extends ParserController
     const FILE_NAME = 'pieces.txt';
     public function getIndex()
     {
+        $pieces = '';
         $pieces = Pieces::all();
-       
-        return view('pieces/index')->with('pieces', !$pieces->isEmpty() ? $pieces : "");
+        $data = [
+            'pieces' => $pieces && !$pieces->isEmpty() ? $pieces : "",
+            'file_path' => parent::getFilePath(self::FILE_NAME)
+        ];
+        return view('pieces.index' , $data);
+
     }
 
     public function postIndex()
     {
+        $pieces = '';
         $urls = $this->getAllUrls();
+
+
         foreach ($urls as $key => $url) {
-            $data = $this->getDateCoreByUrl($url);
-            $piece = Pieces::firstOrCreate(array('piece_id' => $data['piece_id']));
+  
+            $data = $this->getDataPieceByUrl($url);
+
+            if( ! $piece = Pieces::find($data['id'])) {
+
+                $piece = new Pieces();
+            }
+
             $piece->fill($data);
             $piece->save();
+
         }
+
         $pieces = Pieces::all();
         $pieces_json = $pieces->toJson();
        
         Storage::disk('public_import')->put(self::FILE_NAME, $pieces_json);
 
-        return view('pieces/index')->with('pieces', $pieces);
+        $data = [
+            'pieces' => $pieces && !$pieces->isEmpty() ? $pieces : "",
+            'file_path' => parent::getFilePath(self::FILE_NAME)
+        ];
+        
+        return view('pieces.index' , $data);
         
     }
 
@@ -62,7 +83,6 @@ class PiecesController extends ParserController
         curl_close($ch);
 
         $result = \phpQuery::newDocumentHTML($html);
-
         if ($result) {
             $elements = $result->find('a');
             foreach ($elements as $key => $element) {
@@ -72,11 +92,9 @@ class PiecesController extends ParserController
         }
         \phpQuery::unloadDocuments();
         return $urls;
-
-
     }
 
-    private function getDateCoreByUrl($url)
+    private function getDataPieceByUrl($url)
     {
         $html = \Cache::rememberForever('piece_' . $url, function () use ($url) {
             return file_get_contents($url);
@@ -96,17 +114,13 @@ class PiecesController extends ParserController
 
 
         foreach ($rows_info as $key => $tr) {
-
             foreach (pq($tr)->find('td') as $index => $td) {
-
                 if (!$index) {
                     $data['boostname'][$key] = pq($td)->text();
                     continue;
                 }
                 $data['levels'][$index][] = pq($td)->text();
             }
-
-
         }
 
         foreach ($data['levels'] as $key => $level) {
@@ -125,7 +139,7 @@ class PiecesController extends ParserController
 
         $data['title'] = pq($result)->find('.pageContent h1')->text();
         $data['images'] = $images;
-        $data['piece_id'] = preg_replace("/[^0-9]/", '', $url);
+        $data['id'] = preg_replace("/[^0-9]/", '', $url);
 
         return $data;
     }

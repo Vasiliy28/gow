@@ -15,6 +15,13 @@ return [
         'url'=>'materials',
         'name' => 'Materials',
         'controller' => 'MaterialsController',
+    ],
+    
+    [
+        'url'=>'gems',
+        'name' => 'Gems',
+        'controller' => 'GemsController',
     ]
+
 
 ];

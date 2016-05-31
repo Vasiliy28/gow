@@ -13,7 +13,7 @@ class CreateCores250520161911 extends Migration
     public function up()
     {
         Schema::create('cores', function (Blueprint $table) {
-            $table->increments('id');
+            $table->integer('id')->unique();
             $table->string('title', 255);
             $table->text('images');
             $table->string('event', 255);
@@ -21,7 +21,7 @@ class CreateCores250520161911 extends Migration
             $table->text('boostname');
             $table->text('levels');
             $table->timestamps();
-            $table->integer('core_id')->unique();
+            $table->primary(['id']);
         });
     }
 

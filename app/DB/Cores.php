@@ -4,13 +4,13 @@ namespace App\DB;
 class Cores extends Parser
 {
     protected $fillable = [
+        'id',
         'title',
         'images',
         'event',
         'slot',
         'boostname', 
         'levels',
-        'core_id'
     ];
 
     protected $casts = [
@@ -19,10 +19,7 @@ class Cores extends Parser
         'boostname'=>'array',
     ];
 
-
- 
     protected $guarded = [
-        'id',
         'created_at',
         'updated_at'
     ];

@@ -13,12 +13,11 @@ class CreateMaterials2140262015 extends Migration
     public function up()
     {
         Schema::create('materials', function (Blueprint $table){
-            $table->increments('id');
+            $table->integer('id')->unique();
             $table->string('title', 255);
             $table->text('images');
             $table->string('event', 255);
             $table->text('used');
-            $table->integer('material_id')->unique();
             $table->timestamps();
         });
     }

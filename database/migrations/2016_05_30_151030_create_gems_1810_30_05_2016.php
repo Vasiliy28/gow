@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePieces2140262015 extends Migration
+class CreateGems181030052016 extends Migration
 {
     /**
      * Run the migrations.
@@ -12,14 +12,17 @@ class CreatePieces2140262015 extends Migration
      */
     public function up()
     {
-        Schema::create('pieces', function (Blueprint $table) {
+        Schema::create('gems' , function (Blueprint $table){
             $table->integer('id')->unique();
             $table->string('title', 255);
             $table->text('images');
             $table->string('event', 255);
+            $table->integer('four_th_slot');
             $table->text('boostname');
             $table->text('levels');
+            $table->text('gallery');
             $table->timestamps();
+            $table->primary(['id']);
         });
     }
 
@@ -30,6 +33,6 @@ class CreatePieces2140262015 extends Migration
      */
     public function down()
     {
-        Schema::drop('pieces');
+        Schema::drop('gems');
     }
 }

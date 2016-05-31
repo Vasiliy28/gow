@@ -20,34 +20,58 @@ use Symfony\Component\HttpFoundation\File\File;
 
 class CoresController extends ParserController
 {
-    
+
     const FILE_NAME = 'cores.txt';
+
     public function getIndex()
     {
+        $cores = '';
         $cores = Cores::all();
-        return view('cores/index')->with('cores', !$cores->isEmpty() ? $cores : "");
+        $data = [
+            'cores' => $cores && !$cores->isEmpty() ? $cores : "",
+            'file_path' => parent::getFilePath(self::FILE_NAME)
+        ];
+        return view('cores/index' , $data);
     }
 
     public function postIndex()
     {
+        $cores = '';
         FlashHelper::info('POST INDEX');
         $urls = $this->getAllUrls();
-        foreach ($urls as $key => $url) {
-            $data = $this->getDateCoreByUrl($url);
-            $core = Cores::firstOrCreate(array('core_id' => $data['core_id']));
-            $core->fill($data);
-            $core->save();
+
+        if ($urls && is_array($urls)) {
+            foreach ($urls as $key => $url) {
+                if ($key > 15) {
+                    break;
+                }
+                $data = $this->getDataCoreByUrl($url);
+                
+                if ( ! $core = Cores::find($data['id'])) {
+                    $core = new Cores();
+                }
+
+                $core->fill($data);
+                $core->save();
+            }
         }
 
         $cores = Cores::all();
-        $cores_json = $cores->toJson();
-      
-        Storage::disk('public_import')->put(self::FILE_NAME, $cores_json);
-        
-        return view('cores/index')->with('cores', $cores);
+
+        if ($core && !$cores->isEmpty()) {
+            $cores_json = $cores->toJson();
+            $imports_path = public_path("imports");
+            Storage::disk('public_import')->put(self::FILE_NAME, $cores_json);
+        }
+
+        $data = [
+            'cores' => $cores && !$cores->isEmpty() ? $cores : "",
+            'file_path' => parent::getFilePath(self::FILE_NAME)
+        ];
+        return view('cores/index' , $data);
 
     }
-    
+
     private function getAllUrls()
     {
         $url = 'http://gow.help/templates/gow/ajax/findEquipment2/';
@@ -77,18 +101,16 @@ class CoresController extends ParserController
             }
         }
 
-
-
         \phpQuery::unloadDocuments();
         return $urls;
     }
 
-    private function getDateCoreByUrl($url)
+    private function getDataCoreByUrl($url)
     {
+        $data = [];
         $html = \Cache::rememberForever('core_' . $url, function () use ($url) {
             return file_get_contents($url);
         });
-//        $html = file_get_contents($url);
 
 
         $result = \phpQuery::newDocumentHTML($html);
@@ -137,7 +159,7 @@ class CoresController extends ParserController
 
         $data['title'] = pq($result)->find('.pageContent h1')->text();
         $data['images'] = $images;
-        $data['core_id'] = preg_replace("/[^0-9]/", '', $url);
+        $data['id'] = preg_replace("/[^0-9]/", '', $url);
 
         return $data;
 

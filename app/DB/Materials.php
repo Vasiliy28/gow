@@ -5,12 +5,13 @@ namespace App\DB;
 
 class Materials extends Parser
 {
+    
     protected $fillable = [
+        'id',
         'title',
         'images',
         'event',
         'used',
-        'material_id',
     ];
 
     protected $casts = [
@@ -18,10 +19,7 @@ class Materials extends Parser
         'used'=>'array',
     ];
 
-
-
     protected $guarded = [
-        'id',
         'created_at',
         'updated_at'
     ];

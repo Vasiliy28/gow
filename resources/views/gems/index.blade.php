@@ -1,11 +1,11 @@
 @extends('app')
 @section('content')
-    <h1 class="page-header">Core</h1>
+    <h1 class="page-header">Gem</h1>
 
 
     @include('widgets._url_form')
 
-    <h2 class="sub-header">Cores:</h2>
+    <h2 class="sub-header">Gems:</h2>
     <div class="table-responsive">
         <table class="table table-striped table-bordered table-condensed">
             <thead>
@@ -13,11 +13,11 @@
                 <th>#</th>
                 <th width="180px">title</th>
                 <th width="100px">event</th>
-                <th width="100px">slot</th>
+                <th width="100px">4th Gem Slot</th>
                 <th width="270px">boostname</th>
 
-                @if($cores && !$cores->isEmpty() && $cores[0]->levels)
-                    @foreach($cores[0]->levels as $i => $level)
+                @if($gems && ! $gems->isEmpty() && $gems[0]->levels)
+                    @foreach($gems[0]->levels as $i => $level)
                         <th width="130px">level {{$i++}}</th>
                     @endforeach
                 @endif
@@ -25,23 +25,24 @@
             </tr>
             </thead>
             <tbody>
-            @if($cores && !$cores->isEmpty())
-                @foreach($cores as $core)
+            @if($gems && ! $gems->isEmpty())
+                @foreach($gems as $gem)
                     <tr>
-                        <td>{{$core->id}}</td>
-                        <td>{{$core->title }}
-                            <img src="{{$core->images}}">
+                        <td>{{$gem->id}}</td>
+                        <td>{{$gem->title }}
+                            <img src="{{$gem->images}}">
                         </td>
-                        <td>{{$core->event}}</td>
-                        <td>{{$core->slot}}</td>
+                        <td>{{$gem->event}}</td>
+                        <td>{{$gem->four_th_slot ? "Yes" : "No"}}</td>
                         <td>
                             <ul>
-                                @foreach($core->boostname as $name)
+                                @foreach($gem->boostname as $name)
                                     <li>{{$name}}</li>
                                 @endforeach
                             </ul>
                         </td>
-                        @foreach($core->levels as $level)
+
+                        @foreach($gem->levels as $key => $level)
                             <?php $level = explode(",", $level)?>
                         <td>
                             <ul class="level">
@@ -49,8 +50,10 @@
                                     <li>{{$item}}</li>
                                 @endforeach
                             </ul>
+                            <img src="{{$gem->gallery[$key]}}">
                         </td>
                         @endforeach
+
                     </tr>
                 @endforeach
             @endif
