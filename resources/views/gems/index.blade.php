@@ -2,7 +2,6 @@
 @section('content')
     <h1 class="page-header">Gem</h1>
 
-
     @include('widgets._url_form')
 
     <h2 class="sub-header">Gems:</h2>

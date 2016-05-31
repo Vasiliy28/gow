@@ -16,7 +16,7 @@
                 <th width="100px">slot</th>
                 <th width="270px">boostname</th>
 
-                @if($cores && !$cores->isEmpty() && $cores[0]->levels)
+                @if(isset($cores) && !$cores->isEmpty() && $cores[0]->levels)
                     @foreach($cores[0]->levels as $i => $level)
                         <th width="130px">level {{$i++}}</th>
                     @endforeach
@@ -25,7 +25,7 @@
             </tr>
             </thead>
             <tbody>
-            @if($cores && !$cores->isEmpty())
+            @if(isset($cores) && !$cores->isEmpty())
                 @foreach($cores as $core)
                     <tr>
                         <td>{{$core->id}}</td>

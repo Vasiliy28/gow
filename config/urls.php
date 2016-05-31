@@ -21,7 +21,13 @@ return [
         'url'=>'gems',
         'name' => 'Gems',
         'controller' => 'GemsController',
+    ],
+    [
+        'url'=>'buildings',
+        'name' => 'Buildings',
+        'controller' => 'BuildingsController',
     ]
+
 
 
 ];
