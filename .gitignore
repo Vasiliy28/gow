@@ -16,3 +16,4 @@ public/src
 public/images/*
 public/files/*
 composer.phar
+composer.lock
