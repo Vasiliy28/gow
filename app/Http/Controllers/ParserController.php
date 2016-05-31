@@ -12,7 +12,7 @@ abstract class ParserController extends Controller
     
     public function getFilePath($fileName)
     {
-        $file = public_path() . "/imports/" . $fileName;
+        $file = public_path() . "/" .self::PATH_TO_FILE_IN_PUBLIC . "/" . $fileName;
         
         if (file_exists($file)) {
             return self::PATH_TO_FILE_IN_PUBLIC . '/' . $fileName;

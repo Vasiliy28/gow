@@ -21,7 +21,6 @@
             </tr>
             </thead>
             <tbody>
-            @if(isset($buildings) && !$buildings->isEmpty())
                 @foreach($buildings as $building)
                     <tr>
                         <td>{{$building->id}}</td>
@@ -49,7 +48,6 @@
                         @endforeach
                     </tr>
                 @endforeach
-            @endif
             </tbody>
         </table>
     </div>

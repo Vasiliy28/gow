@@ -21,11 +21,11 @@ class PiecesController extends ParserController
     {
         $pieces = '';
         $pieces = Pieces::all();
-        $data = [
-            'pieces' => $pieces && !$pieces->isEmpty() ? $pieces : "",
-            'file_path' => parent::getFilePath(self::FILE_NAME)
-        ];
-        return view('pieces.index' , $data);
+
+        \View::share( 'file_path', $this->getFilePath(self::FILE_NAME) );
+        \View::share('pieces', $pieces);
+
+        return view('pieces.index');
 
     }
 
@@ -54,12 +54,12 @@ class PiecesController extends ParserController
        
         Storage::disk('public_import')->put(self::FILE_NAME, $pieces_json);
 
-        $data = [
-            'pieces' => $pieces && !$pieces->isEmpty() ? $pieces : "",
-            'file_path' => parent::getFilePath(self::FILE_NAME)
-        ];
+        \View::share( 'file_path', $this->getFilePath(self::FILE_NAME) );
+        \View::share('pieces', $pieces);
+
+        return view('pieces.index');
         
-        return view('pieces.index' , $data);
+        
         
     }
 

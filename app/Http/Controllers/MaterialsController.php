@@ -20,11 +20,11 @@ class MaterialsController extends ParserController
     {
         $materials = '';
         $materials = Materials::all();
-        $data = [
-            'materials' => $materials && !$materials->isEmpty() ? $materials : '',
-            'file_path' => parent::getFilePath(self::FILE_NAME) ,
-        ];
-        return view('materials.index', $data);
+        
+        \View::share('file_path' , $this->getFilePath(self::FILE_NAME));
+        \View::share('materials' , $materials);
+
+        return view('materials.index');
     }
 
     public function postIndex()
@@ -34,7 +34,7 @@ class MaterialsController extends ParserController
         
         foreach ($urls as $key => $url) {
 
-            if($key > 15) {
+            if($key > 5) {
                 break;
             }
             $data = $this->getDataMaterialByUrl($url);
@@ -50,11 +50,11 @@ class MaterialsController extends ParserController
         $materials_json = $materials->toJson();
         Storage::disk('public_import')->put(self::FILE_NAME , $materials_json);
 
-        $data = [
-            'materials' => $materials && !$materials->isEmpty() ? $materials : '',
-            'file_path' => parent::getFilePath(self::FILE_NAME) ,
-        ];
-        return view('materials.index', $data);
+        \View::share('file_path' , $this->getFilePath(self::FILE_NAME));
+        \View::share('materials' , $materials);
+
+        return view('materials.index');
+        
     }
     private function getAllUrls()
     {

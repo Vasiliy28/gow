@@ -15,16 +15,13 @@
                 <th width="100px">4th Gem Slot</th>
                 <th width="270px">boostname</th>
 
-                @if($gems && ! $gems->isEmpty() && $gems[0]->levels)
-                    @foreach($gems[0]->levels as $i => $level)
-                        <th width="130px">level {{$i++}}</th>
-                    @endforeach
-                @endif
+                @foreach($gems[0]->levels as $i => $level)
+                    <th width="130px">level {{$i++}}</th>
+                @endforeach
 
             </tr>
             </thead>
             <tbody>
-            @if($gems && ! $gems->isEmpty())
                 @foreach($gems as $gem)
                     <tr>
                         <td>{{$gem->id}}</td>
@@ -55,7 +52,6 @@
 
                     </tr>
                 @endforeach
-            @endif
             </tbody>
         </table>
     </div>

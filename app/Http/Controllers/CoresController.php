@@ -61,11 +61,9 @@ class CoresController extends ParserController
             Storage::disk('public_import')->put(self::FILE_NAME, $cores_json);
         }
 
-        $data = [
-            'cores' => $cores && !$cores->isEmpty() ? $cores : "",
-            'file_path' => parent::getFilePath(self::FILE_NAME)
-        ];
-        return view('cores/index' , $data);
+        \View::share( 'file_path', $this->getFilePath(self::FILE_NAME) );
+        \View::share('cores', $cores);
+        return view('cores/index');
 
     }
 

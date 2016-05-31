@@ -14,17 +14,12 @@
                 <th width="180px">title</th>
                 <th width="100px">event</th>
                 <th width="270px">boostname</th>
-
-                @if($pieces && !$pieces->isEmpty())
-                    @foreach($pieces[0]->levels as $i => $level)
-                        <th width="130px">level {{$i++}}</th>
-                    @endforeach
-                @endif
-
+                @foreach($pieces[0]->levels as $i => $level)
+                    <th width="130px">level {{$i++}}</th>
+                @endforeach
             </tr>
             </thead>
             <tbody>
-            @if($pieces && !$pieces->isEmpty())
                 @foreach($pieces as $piece)
                     <tr>
                         <td>{{$piece->id}}</td>
@@ -51,7 +46,6 @@
                         @endforeach
                     </tr>
                 @endforeach
-            @endif
             </tbody>
         </table>
     </div>

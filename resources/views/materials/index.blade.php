@@ -17,7 +17,6 @@
             </tr>
             </thead>
             <tbody>
-            @if($materials && !$materials->isEmpty())
 
                 @foreach($materials as $material)
                     <tr>
@@ -29,17 +28,14 @@
                         </td>
                         <td>{{$material->event}}</td>
                         <td>
-                            @if(is_array($material->used))
                                 <ul>
                                     @foreach($material->used as $name)
                                         <li>{{$name}}</li>
                                     @endforeach
                                 </ul>
-                            @endif
                         </td>
                     </tr>
                 @endforeach
-            @endif
             </tbody>
         </table>
     </div>

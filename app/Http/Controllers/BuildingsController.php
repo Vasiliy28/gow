@@ -17,13 +17,13 @@ class BuildingsController extends ParserController
     const FILE_NAME = 'buildings.txt';
     public function getIndex()
     {
-        $buildings = '';
+
         $buildings = Buildings::all();
-        $data = [
-            'buildings' => $buildings && !$buildings->isEmpty() ? $buildings : "",
-            'file_path' => parent::getFilePath(self::FILE_NAME)
-        ];
-       return view('cores.index', $data);
+
+        \View::share('buildings' , $buildings);
+        \View::share('file_path' , $this->getFilePath(self::FILE_NAME));
+
+       return view('cores.index');
     }
 
     public function postIndex()
@@ -43,11 +43,10 @@ class BuildingsController extends ParserController
             }
         }
         FlashHelper::info("Parse Ok");
-        $data = [
-            'buildings' => $buildings && !$buildings->isEmpty() ? $buildings : "",
-            'file_path' => parent::getFilePath(self::FILE_NAME)
-        ];
-        return view('cores.index', $data);
+        \View::share('buildings' , $buildings);
+        \View::share('file_path' , $this->getFilePath(self::FILE_NAME));
+
+        return view('cores.index');
     }
 
     public function getDataBuildingByUrl($url)

@@ -18,18 +18,15 @@ class GemsController extends ParserController
 
     public function getIndex()
     {
-        $gems = '';
+
         $gems = Gems::all();
-        $data = [
-            'gems' => $gems && !$gems->isEmpty() ? $gems : "",
-            'file_path' => parent::getFilePath(self::FILE_NAME)
-        ];
-        return view("gems.index", $data);
+        \View::share('gems' , $gems);
+        \View::share('file_path', $this->getFilePath(self::FILE_NAME));
+        return view("gems.index");
     }
     
     public function postIndex()
     {
-        $gems = '';
 
         $urls = $this->getAllUrls();
         if($urls && is_array($urls)) {
@@ -55,13 +52,9 @@ class GemsController extends ParserController
             $gems_json = $gems->toJson();
             Storage::disk('public_import')->put(self::FILE_NAME, $gems_json);
         }
-
-        $data = [
-            'gems' => $gems && !$gems->isEmpty() ? $gems : "",
-            'file_path' => parent::getFilePath(self::FILE_NAME)
-        ];
-
-        return view("gems.index", $data);
+        \View::share('gems' , $gems);
+        \View::share('file_path', $this->getFilePath(self::FILE_NAME));
+        return view("gems.index");
     }
 
     private function getDataGemByUrl($url)
