@@ -18,7 +18,7 @@ class MaterialsController extends ParserController
 
     public function getIndex()
     {
-        $materials = '';
+
         $materials = Materials::all();
         
         \View::share('file_path' , $this->getFilePath(self::FILE_NAME));
@@ -29,7 +29,7 @@ class MaterialsController extends ParserController
 
     public function postIndex()
     {
-        $materials = '';
+
         $urls = $this->getAllUrls();
         
         foreach ($urls as $key => $url) {
@@ -58,6 +58,7 @@ class MaterialsController extends ParserController
     }
     private function getAllUrls()
     {
+        $urls = [];
         $url = 'http://gow.help/en/resources/materials/';
         $html = file_get_contents($url);
 
@@ -92,7 +93,7 @@ class MaterialsController extends ParserController
         $title = $result->find('.pageContent')->find('h1')->eq(0)->text();
         $table_detail = $result->find('.gemMainDetail');
         $rows_detail = $table_detail->find('tr');
-        $images = 'http://gow.help' . $result->find('.detailImg img')->attr('data-img');
+
         foreach ($rows_detail as $row) {
             $value = pq($row)->find('td')->eq(0)->text();
             if (preg_match('/event/i', $value)) {
@@ -105,7 +106,7 @@ class MaterialsController extends ParserController
             $data['used'][$key] = pq($item)->text();
         }
         $data['title'] = $title;
-        $data['images'] = $images;
+        $data['images'][] = 'http://gow.help' . $result->find('.detailImg img')->attr('data-img');
         $data['id'] = preg_replace("/[^0-9]/", '', $url);
         return $data;
 

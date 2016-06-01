@@ -15,9 +15,6 @@
                 <th width="100px">event</th>
                 <th width="100px">slot</th>
                 <th width="270px">boostname</th>
-
-
-
             </tr>
             </thead>
             <tbody>

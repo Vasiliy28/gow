@@ -33,7 +33,6 @@ class CoresController extends ParserController
 
     public function postIndex()
     {
-        $cores = '';
         FlashHelper::info('POST INDEX');
         $urls = $this->getAllUrls();
 
@@ -55,9 +54,8 @@ class CoresController extends ParserController
 
         $cores = Cores::all();
 
-        if ($core && !$cores->isEmpty()) {
+        if ($cores && ! $cores->isEmpty()) {
             $cores_json = $cores->toJson();
-            $imports_path = public_path("imports");
             Storage::disk('public_import')->put(self::FILE_NAME, $cores_json);
         }
 
@@ -153,7 +151,7 @@ class CoresController extends ParserController
         }
 
         $data['title'] = pq($result)->find('.pageContent h1')->text();
-        $data['images'] = $images;
+        $data['images'][] = $images;
         $data['id'] = preg_replace("/[^0-9]/", '', $url);
 
         return $data;

@@ -60,6 +60,7 @@ class GemsController extends ParserController
     private function getDataGemByUrl($url)
     {
         $data = [];
+       
         $html = \Cache::rememberForever('gem_' . $url, function () use ($url) {
             return file_get_contents($url);
         });
@@ -67,7 +68,7 @@ class GemsController extends ParserController
         \phpQuery::unloadDocuments($html);
 
         $data['title'] = $result->find('.pageContent')->find('h1')->eq(0)->text();
-        $data['images'] = 'http://gow.help' . $result->find('img.lazy')->eq(0)->attr('data-img');
+        $data['images'][] = 'http://gow.help' . $result->find('img.lazy')->eq(0)->attr('data-img');
 
         $rows_detail = $result->find('.gemMainDetail')->find('tr');
         foreach ($rows_detail as $row) {

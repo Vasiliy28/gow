@@ -22,9 +22,10 @@
                     <tr>
                         <td>{{$material->material_id}}</td>
                         <td>
-
                             {{$material->title}}
-                            <img src="{{$material->images}}" >
+                            @foreach($material->images as $image)
+                                <img src="{{$image}}" >
+                            @endforeach
                         </td>
                         <td>{{$material->event}}</td>
                         <td>

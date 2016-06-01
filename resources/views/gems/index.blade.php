@@ -15,9 +15,11 @@
                 <th width="100px">4th Gem Slot</th>
                 <th width="270px">boostname</th>
 
-                @foreach($gems[0]->levels as $i => $level)
-                    <th width="130px">level {{$i++}}</th>
-                @endforeach
+                @if(isset($gems[0]))
+                    @foreach($gems[0]->levels as $i => $level)
+                        <th width="130px">level {{$i++}}</th>
+                    @endforeach
+                @endif
 
             </tr>
             </thead>
@@ -26,7 +28,9 @@
                     <tr>
                         <td>{{$gem->id}}</td>
                         <td>{{$gem->title }}
-                            <img src="{{$gem->images}}">
+                            @foreach($gem->images as $image)
+                                <img src="{{$image}}">
+                            @endforeach
                         </td>
                         <td>{{$gem->event}}</td>
                         <td>{{$gem->four_th_slot ? "Yes" : "No"}}</td>
@@ -46,7 +50,7 @@
                                     <li>{{$item}}</li>
                                 @endforeach
                             </ul>
-                            <img src="{{$gem->gallery[$key]}}">
+                            <img src="{{$gem->gallery[$key] ? $gem->gallery[$key] : ""}}">
                         </td>
                         @endforeach
 

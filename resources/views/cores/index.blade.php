@@ -16,9 +16,11 @@
                 <th width="100px">slot</th>
                 <th width="270px">boostname</th>
 
-                @foreach($cores[0]->levels as $i => $level)
-                    <th width="130px">level {{$i++}}</th>
-                @endforeach
+                @if(isset($cores[0]))
+                    @foreach($cores[0]->levels as $i => $level)
+                        <th width="130px">level {{$i++}}</th>
+                    @endforeach
+                @endif
             </tr>
             </thead>
             <tbody>
@@ -26,7 +28,9 @@
                 <tr>
                     <td>{{$core->id}}</td>
                     <td>{{$core->title }}
-                        <img src="{{$core->images}}">
+                        @foreach($core->images as $image)
+                            <img src="{{$image}}">
+                        @endforeach
                     </td>
                     <td>{{$core->event}}</td>
                     <td>{{$core->slot}}</td>

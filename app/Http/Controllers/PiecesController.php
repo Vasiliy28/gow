@@ -19,7 +19,6 @@ class PiecesController extends ParserController
     const FILE_NAME = 'pieces.txt';
     public function getIndex()
     {
-        $pieces = '';
         $pieces = Pieces::all();
 
         \View::share( 'file_path', $this->getFilePath(self::FILE_NAME) );
@@ -31,13 +30,20 @@ class PiecesController extends ParserController
 
     public function postIndex()
     {
-        $pieces = '';
         $urls = $this->getAllUrls();
 
 
         foreach ($urls as $key => $url) {
-  
+
+            /**
+             * For test
+             */
+
+            if($key > 14) {
+                break;
+            }
             $data = $this->getDataPieceByUrl($url);
+
 
             if( ! $piece = Pieces::find($data['id'])) {
 
@@ -96,6 +102,7 @@ class PiecesController extends ParserController
 
     private function getDataPieceByUrl($url)
     {
+        $data = [];
         $html = \Cache::rememberForever('piece_' . $url, function () use ($url) {
             return file_get_contents($url);
         });
@@ -107,7 +114,7 @@ class PiecesController extends ParserController
 
         $table_detail = $result->find('.gemMainDetail');
         $rows_detail = $table_detail->find('tr');
-        $images = 'http://gow.help' . $result->find('.detailImg img')->attr('data-img');
+
 
         $table_inf = $result->find('.eqInfoDiv table');
         $rows_info = $table_inf->find('tr');
@@ -136,9 +143,8 @@ class PiecesController extends ParserController
             }
 
         }
-
+        $data['images'][] = 'http://gow.help' . $result->find('.detailImg img')->attr('data-img');
         $data['title'] = pq($result)->find('.pageContent h1')->text();
-        $data['images'] = $images;
         $data['id'] = preg_replace("/[^0-9]/", '', $url);
 
         return $data;

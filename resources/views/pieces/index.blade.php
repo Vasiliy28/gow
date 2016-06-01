@@ -14,9 +14,12 @@
                 <th width="180px">title</th>
                 <th width="100px">event</th>
                 <th width="270px">boostname</th>
-                @foreach($pieces[0]->levels as $i => $level)
-                    <th width="130px">level {{$i++}}</th>
-                @endforeach
+
+                @if(isset($pieces[0]))
+                    @foreach($pieces[0]->levels as $i => $level)
+                        <th width="130px">level {{$i++}}</th>
+                    @endforeach
+                @endif
             </tr>
             </thead>
             <tbody>
@@ -24,7 +27,11 @@
                     <tr>
                         <td>{{$piece->id}}</td>
                         <td>{{$piece->title }}
-                        <img src="{{$piece->images}}">
+
+                            @foreach($piece->images as $image)
+                                <img src="{{$image}}">
+                            @endforeach
+
                         </td>
                         <td>{{$piece->event}}</td>
                         <td>

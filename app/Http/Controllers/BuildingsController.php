@@ -23,7 +23,7 @@ class BuildingsController extends ParserController
         \View::share('buildings' , $buildings);
         \View::share('file_path' , $this->getFilePath(self::FILE_NAME));
 
-       return view('cores.index');
+       return view('buildings.index');
     }
 
     public function postIndex()
@@ -42,11 +42,11 @@ class BuildingsController extends ParserController
                 $this->getDataBuildingByUrl($url);
             }
         }
-        FlashHelper::info("Parse Ok");
+  
         \View::share('buildings' , $buildings);
         \View::share('file_path' , $this->getFilePath(self::FILE_NAME));
 
-        return view('cores.index');
+        return view('buildings.index');
     }
 
     public function getDataBuildingByUrl($url)
@@ -59,6 +59,7 @@ class BuildingsController extends ParserController
 
     private function getAllUrls()
     {
+        $urls = [];
         $url = 'http://gow.help/en/resources/buildings/';
         $html = file_get_contents($url);
 
