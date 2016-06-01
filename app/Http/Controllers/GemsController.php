@@ -18,7 +18,6 @@ class GemsController extends ParserController
 
     public function getIndex()
     {
-
         $gems = Gems::all();
         \View::share('gems' , $gems);
         \View::share('file_path', $this->getFilePath(self::FILE_NAME));
@@ -68,7 +67,7 @@ class GemsController extends ParserController
         \phpQuery::unloadDocuments($html);
 
         $data['title'] = $result->find('.pageContent')->find('h1')->eq(0)->text();
-        $data['images'][] = 'http://gow.help' . $result->find('img.lazy')->eq(0)->attr('data-img');
+        $data['images'][] = self::GOW_HOST . $result->find('img.lazy')->eq(0)->attr('data-img');
 
         $rows_detail = $result->find('.gemMainDetail')->find('tr');
         foreach ($rows_detail as $row) {
@@ -105,7 +104,7 @@ class GemsController extends ParserController
                 }
 
                 if($index && !$key) {
-                    $data['gallery'][$index] = 'http://gow.help' . pq($td)->find('img.lazy')->eq(0)->attr('data-img');
+                    $data['gallery'][$index] = self::GOW_HOST . pq($td)->find('img.lazy')->eq(0)->attr('data-img');
                     continue;
                 }
 
@@ -142,7 +141,7 @@ class GemsController extends ParserController
 
             foreach ($links as $key => $link) {
                 $link = pq($link)->attr('href');
-                $urls[$key] = 'http://gow.help' . $link;
+                $urls[$key] = self::GOW_HOST . $link;
             }
 
         }

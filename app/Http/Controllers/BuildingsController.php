@@ -11,6 +11,7 @@ namespace App\Http\Controllers;
 
 use App\DB\Buildings;
 use App\Helpers\FlashHelper;
+use App\Helpers\ParserHelper;
 
 class BuildingsController extends ParserController
 {
@@ -18,8 +19,7 @@ class BuildingsController extends ParserController
 
     public function getIndex()
     {
-
-        $buildings = Buildings::all();
+        $buildings = [];
 
         \View::share('buildings', $buildings);
         \View::share('file_path', $this->getFilePath(self::FILE_NAME));
@@ -30,7 +30,7 @@ class BuildingsController extends ParserController
     public function postIndex()
     {
         $this->getAllUrls();
-        $buildings = Buildings::all();
+
         $urls = $this->getAllUrls();
 
         if ($urls && is_array($urls)) {
@@ -38,10 +38,17 @@ class BuildingsController extends ParserController
                 if ($key > 14) {
                     break;
                 }
-                $this->getDataBuildingByUrl($url);
+                $data = $this->getDataBuildingByUrl($url);
+
+                if ( ! $building = Buildings::find($data['id'])) {
+                    $building = new Buildings();
+                }
+                $building->fill($data);
+                $building->save();
             }
         }
 
+        $buildings = [];
         \View::share('buildings', $buildings);
         \View::share('file_path', $this->getFilePath(self::FILE_NAME));
         FlashHelper::info('POST INDEX PARSE');
@@ -60,20 +67,30 @@ class BuildingsController extends ParserController
 
         $rows_info = pq($result)->find('.researchInfo tr');
 
-        $index_levels = 0;
-        $index_woods = 0;
-        $index_stones = 0;
-        $index_foods = 0;
-        $index_ores = 0;
-        $index_times = 0;
-        $index_requirements = 0;
-        $index_masters_hammer = 0;
-        $index_hero_xp = 0;
-        $index_power = 0;
+        $index_levels = null;
+        $index_woods = null;
+        $index_stones = null;
+        $index_foods = null;
+        $index_ores = null;
+        $index_times = null;
+        $index_requirements = null;
+        $index_masters_hammer = null;
+        $index_hero_xp = null;
+        $index_power = null;
         $bonuses = [];
 
         foreach ($rows_info as $key => $row) {
 
+            /**
+             * not include last row
+             */
+            if ($rows_info->length - 1 <= $key) {
+                break;
+            }
+
+            /**
+             * get index item
+             */
             if ( ! $key ) {
                 foreach (pq($row)->find('td') as $index => $td) {
 
@@ -123,30 +140,67 @@ class BuildingsController extends ParserController
                     $bonuses[$value] = $index;
                 }
             } else {
-                $data['levels'][] = pq($row)->find('td')->eq($index_levels)->html();
-                $data['woods'][] = pq($row)->find('td')->eq($index_woods)->html();
-                $data['stones'][] = pq($row)->find('td')->eq($index_stones)->html();
-                $data['foods'][] = pq($row)->find('td')->eq($index_foods)->html();
-                $data['ores'][] = pq($row)->find('td')->eq($index_ores)->html();
-                $data['times'][] = pq($row)->find('td')->eq($index_times)->html();
-                $data['requirements'][] = pq($row)->find('td')->eq($index_requirements)->html();
-                $data['masters_hammers'][] = pq($row)->find('td')->eq($index_masters_hammer)->html();
-                $data['hero_xp'][] = pq($row)->find('td')->eq($index_hero_xp)->html();
-                $data['power'][] = pq($row)->find('td')->eq($index_power)->html();
-
-                foreach ($bonuses as $name_bonus => $index_bonuses) {
-                    $data['bonuses'][$name_bonus][] = pq($row)->find('td')->eq($index_bonuses)->html();
-                    $a = 1;
+                $level = (int) pq($row)->find('td')->eq($index_levels)->text();
+                /**
+                 * get data from index item
+                 */
+                if ($index_levels !== null) {
+                    $data['levels'][$level] = $level;
                 }
 
-            }
+                if ( $index_woods !== null) {
+                    $woods =  pq($row)->find('td')->eq($index_woods)->text();
+                    $data['woods'][$level] = $woods;
+                }
 
+                if ( $index_stones !== null) {
+                    $data['stones'][$level] = pq($row)->find('td')->eq($index_stones)->text();
+                }
+
+
+                if ( $index_foods !== null) {
+                    $data['foods'][$level] = pq($row)->find('td')->eq($index_foods)->text();
+                }
+
+                if ( $index_ores !== null) {
+                    $data['ores'][$level] = pq($row)->find('td')->eq($index_ores)->text();
+                }
+
+                if ( $index_times !== null) {
+                    $data['times'][$level] = pq($row)->find('td')->eq($index_times)->text();
+                }
+
+                if ( $index_requirements !== null) {
+                   $requirements = strip_tags(pq($row)->find('td')->eq($index_requirements)->html());
+                    $requirements = trim($requirements);
+                    $requirements = str_replace("\n", "," ,$requirements);
+                    $data['requirements'][$level] = $requirements;
+                }
+
+                if ( $index_masters_hammer !== null) {
+                    $data['masters_hammers'][$level] = pq($row)->find('td')->eq($index_masters_hammer)->text();
+
+                }
+
+                if ( $index_hero_xp !== null) {
+                    $data['hero_xp'][$level] = pq($row)->find('td')->eq($index_hero_xp)->text();
+                }
+
+                if ( $index_power !== null) {
+                    $data['power'][$level] = pq($row)->find('td')->eq($index_power)->text();
+                }
+
+                foreach ($bonuses as $name_bonus => $index_bonuses) {
+                    $data['bonuses'][$name_bonus][$level] = pq($row)->find('td')->eq($index_bonuses)->text();
+                }
+            }
         }
 
-
         $data['title'] = pq($result)->find('.pageContent h1')->text();
-        $data['images'][] = 'http://gow.help' . $result->find('.detailImg img')->attr('data-img');
+        $data['images'][] = self::GOW_HOST . $result->find('.detailImg img')->attr('data-img');
+        $data['id'] = preg_replace("/[^0-9]/", '', $url);
         $a = 1;
+        return $data;
 
     }
 
@@ -155,7 +209,6 @@ class BuildingsController extends ParserController
         $urls = [];
         $url = 'http://gow.help/en/resources/buildings/';
         $html = file_get_contents($url);
-
         $result = \phpQuery::newDocumentHTML($html);
 
         if ($result) {
@@ -164,10 +217,9 @@ class BuildingsController extends ParserController
 
             foreach ($links as $key => $link) {
                 $link = pq($link)->attr('href');
-                $urls[$key] = 'http://gow.help' . $link;
+                $urls[$key] = self::GOW_HOST . $link;
             }
         }
-
         \phpQuery::unloadDocuments();
 
         return $urls;
