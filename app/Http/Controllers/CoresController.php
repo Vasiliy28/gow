@@ -111,7 +111,6 @@ class CoresController extends ParserController
 
         $table_detail = $result->find('.gemMainDetail');
         $rows_detail = $table_detail->find('tr');
-        $images = 'http://gow.help' . $result->find('.detailImg img')->attr('data-img');
 
         $table_inf = $result->find('.eqInfoDiv table');
         $rows_info = $table_inf->find('tr');
@@ -151,7 +150,7 @@ class CoresController extends ParserController
         }
 
         $data['title'] = pq($result)->find('.pageContent h1')->text();
-        $data['images'][] = $images;
+        $data['images'][] = 'http://gow.help' . $result->find('.detailImg img')->attr('data-img');
         $data['id'] = preg_replace("/[^0-9]/", '', $url);
 
         return $data;
