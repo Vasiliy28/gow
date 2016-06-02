@@ -29,6 +29,7 @@ class BuildingsController extends ParserController
 
     public function postIndex()
     {
+
         $this->getAllUrls();
 
         $urls = $this->getAllUrls();
@@ -167,7 +168,11 @@ class BuildingsController extends ParserController
                 }
 
                 if ( $index_times !== null) {
-                    $data['times'][$level] = pq($row)->find('td')->eq($index_times)->text();
+
+                    $str_time = pq($row)->find('td')->eq($index_times)->text();
+                    $total_second = ParserHelper::convertTimeToTotalSecond($str_time);
+                 
+                    $data['times'][$level] = $total_second;
                 }
 
                 if ( $index_requirements !== null) {
@@ -199,7 +204,6 @@ class BuildingsController extends ParserController
         $data['title'] = pq($result)->find('.pageContent h1')->text();
         $data['images'][] = self::GOW_HOST . $result->find('.detailImg img')->attr('data-img');
         $data['id'] = preg_replace("/[^0-9]/", '', $url);
-        $a = 1;
         return $data;
 
     }
