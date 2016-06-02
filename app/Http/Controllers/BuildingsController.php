@@ -92,7 +92,7 @@ class BuildingsController extends ParserController
             /**
              * get index item
              */
-            if ( ! $key ) {
+            if ( ! $key) {
                 foreach (pq($row)->find('td') as $index => $td) {
 
                     $value = pq($td)->text();
@@ -141,7 +141,7 @@ class BuildingsController extends ParserController
                     $bonuses[$value] = $index;
                 }
             } else {
-                $level = (int) pq($row)->find('td')->eq($index_levels)->text();
+                $level = (int)pq($row)->find('td')->eq($index_levels)->text();
                 /**
                  * get data from index item
                  */
@@ -149,54 +149,104 @@ class BuildingsController extends ParserController
                     $data['levels'][$level] = $level;
                 }
 
-                if ( $index_woods !== null) {
-                    $woods =  pq($row)->find('td')->eq($index_woods)->text();
-                    $data['woods'][$level] = $woods;
+                if ($index_woods !== null) {
+
+                    $wood = pq($row)->find('td')->eq($index_woods)->text();
+
+                    if ( ! $wood || $wood != "-") {
+                        $wood = preg_replace("/[^\d]/", "", $wood);
+                        $data['woods'][$level] = $wood;
+                    }
+
                 }
 
-                if ( $index_stones !== null) {
-                    $data['stones'][$level] = pq($row)->find('td')->eq($index_stones)->text();
+                if ($index_stones !== null) {
+                    $stone = pq($row)->find('td')->eq($index_stones)->text();
+
+                    if ( ! $stone && $stone != "-") {
+                        $stone = preg_replace("/[^\d]/", "", $stone);
+                        $data['stones'][$level] = $stone;
+                    }
+
                 }
 
 
-                if ( $index_foods !== null) {
-                    $data['foods'][$level] = pq($row)->find('td')->eq($index_foods)->text();
+                if ($index_foods !== null) {
+                    $food = pq($row)->find('td')->eq($index_foods)->text();
+
+                    if ( ! $food || $food != "-") {
+                        $food = preg_replace("/[^\d]/", "", $food);
+                        $data['foods'][$level] = $food;
+                    }
+
                 }
 
-                if ( $index_ores !== null) {
-                    $data['ores'][$level] = pq($row)->find('td')->eq($index_ores)->text();
+                if ($index_ores !== null) {
+                    $ore = pq($row)->find('td')->eq($index_ores)->text();
+
+                    if ( ! $ore || $ore != "-") {
+                        $ore = preg_replace("/[^\d]/", "", $ore);
+                        $data['ores'][$level] = $ore;
+                    }
+
                 }
 
-                if ( $index_times !== null) {
+                if ($index_times !== null) {
 
                     $str_time = pq($row)->find('td')->eq($index_times)->text();
                     $total_second = ParserHelper::convertTimeToTotalSecond($str_time);
-                 
                     $data['times'][$level] = $total_second;
                 }
 
-                if ( $index_requirements !== null) {
-                   $requirements = strip_tags(pq($row)->find('td')->eq($index_requirements)->html());
-                    $requirements = trim($requirements);
-                    $requirements = str_replace("\n", "," ,$requirements);
-                    $data['requirements'][$level] = $requirements;
+                if ($index_requirements !== null) {
+                    $requirements = pq($row)->find('td')->eq($index_requirements)->html();
+                    if ( ! $requirements || $requirements != "-") {
+                        $requirements = strip_tags($requirements);
+                        $requirements = trim($requirements);
+                        $requirements = str_replace("\n", ",", $requirements);
+                        $data['requirements'][$level] = $requirements;
+                    }
+
                 }
 
-                if ( $index_masters_hammer !== null) {
-                    $data['masters_hammers'][$level] = pq($row)->find('td')->eq($index_masters_hammer)->text();
+                if ($index_masters_hammer !== null) {
+                    $master_hammer = pq($row)->find('td')->eq($index_masters_hammer)->text();
+
+                    if ( ! $master_hammer || $master_hammer != "-") {
+                        $master_hammer = preg_replace("/[^\d]/", "", $master_hammer);
+                        $data['masters_hammers'][$level] = $master_hammer;
+                    }
 
                 }
 
-                if ( $index_hero_xp !== null) {
-                    $data['hero_xp'][$level] = pq($row)->find('td')->eq($index_hero_xp)->text();
+                if ($index_hero_xp !== null) {
+                    $hero_xp = pq($row)->find('td')->eq($index_hero_xp)->text();
+
+                    if ( ! $hero_xp || $hero_xp != "-") {
+                        $hero_xp = preg_replace("/[^\d]/", "", $hero_xp);
+                        $data['hero_xp'][$level] = $hero_xp;
+                    }
+
                 }
 
-                if ( $index_power !== null) {
-                    $data['power'][$level] = pq($row)->find('td')->eq($index_power)->text();
+                if ($index_power !== null) {
+                    $power = pq($row)->find('td')->eq($index_power)->text();
+
+                    if ( ! $power || $power != "-") {
+                        $power = preg_replace("/[^\d]/", "", $power);
+                        $data['power'][$level] = $power;
+                    }
+
                 }
 
                 foreach ($bonuses as $name_bonus => $index_bonuses) {
-                    $data['bonuses'][$name_bonus][$level] = pq($row)->find('td')->eq($index_bonuses)->text();
+                    $bonus = pq($row)->find('td')->eq($index_bonuses)->text();
+
+                    if ( ! $bonus || $bonus != "-") {
+                        $bonus = preg_replace("/[^\d]/", "", $bonus);
+                        $data['bonuses'][$name_bonus][$level] = $bonus;
+                    }
+
                 }
             }
         }

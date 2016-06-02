@@ -50,11 +50,8 @@ class ParserHelper
 
                 if (strpos($item, 'd') !== false) {
                     $day = (int)$item;
-
-                    if ($day > 0 && $day <= 31) {
                         $total_second += (int)$day * $one_day;
-                    }
-                    continue;
+                                    continue;
                 }
 
             }
