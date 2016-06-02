@@ -153,7 +153,7 @@ class BuildingsController extends ParserController
 
                     $wood = pq($row)->find('td')->eq($index_woods)->text();
 
-                    if ( ! $wood || $wood != "-") {
+                    if (  $wood && $wood != "-") {
                         $wood = preg_replace("/[^\d]/", "", $wood);
                         $data['woods'][$level] = $wood;
                     }
@@ -163,7 +163,7 @@ class BuildingsController extends ParserController
                 if ($index_stones !== null) {
                     $stone = pq($row)->find('td')->eq($index_stones)->text();
 
-                    if ( ! $stone && $stone != "-") {
+                    if (  $stone && $stone != "-") {
                         $stone = preg_replace("/[^\d]/", "", $stone);
                         $data['stones'][$level] = $stone;
                     }
@@ -174,7 +174,7 @@ class BuildingsController extends ParserController
                 if ($index_foods !== null) {
                     $food = pq($row)->find('td')->eq($index_foods)->text();
 
-                    if ( ! $food || $food != "-") {
+                    if (  $food && $food != "-") {
                         $food = preg_replace("/[^\d]/", "", $food);
                         $data['foods'][$level] = $food;
                     }
@@ -184,7 +184,7 @@ class BuildingsController extends ParserController
                 if ($index_ores !== null) {
                     $ore = pq($row)->find('td')->eq($index_ores)->text();
 
-                    if ( ! $ore || $ore != "-") {
+                    if (  $ore && $ore != "-") {
                         $ore = preg_replace("/[^\d]/", "", $ore);
                         $data['ores'][$level] = $ore;
                     }
@@ -200,7 +200,7 @@ class BuildingsController extends ParserController
 
                 if ($index_requirements !== null) {
                     $requirements = pq($row)->find('td')->eq($index_requirements)->html();
-                    if ( ! $requirements || $requirements != "-") {
+                    if (  $requirements && $requirements != "-") {
                         $requirements = strip_tags($requirements);
                         $requirements = trim($requirements);
                         $requirements = str_replace("\n", ",", $requirements);
@@ -212,7 +212,7 @@ class BuildingsController extends ParserController
                 if ($index_masters_hammer !== null) {
                     $master_hammer = pq($row)->find('td')->eq($index_masters_hammer)->text();
 
-                    if ( ! $master_hammer || $master_hammer != "-") {
+                    if (  $master_hammer && $master_hammer != "-") {
                         $master_hammer = preg_replace("/[^\d]/", "", $master_hammer);
                         $data['masters_hammers'][$level] = $master_hammer;
                     }
@@ -222,7 +222,7 @@ class BuildingsController extends ParserController
                 if ($index_hero_xp !== null) {
                     $hero_xp = pq($row)->find('td')->eq($index_hero_xp)->text();
 
-                    if ( ! $hero_xp || $hero_xp != "-") {
+                    if (  $hero_xp && $hero_xp != "-") {
                         $hero_xp = preg_replace("/[^\d]/", "", $hero_xp);
                         $data['hero_xp'][$level] = $hero_xp;
                     }
@@ -232,7 +232,7 @@ class BuildingsController extends ParserController
                 if ($index_power !== null) {
                     $power = pq($row)->find('td')->eq($index_power)->text();
 
-                    if ( ! $power || $power != "-") {
+                    if (  $power && $power != "-") {
                         $power = preg_replace("/[^\d]/", "", $power);
                         $data['power'][$level] = $power;
                     }
@@ -242,7 +242,7 @@ class BuildingsController extends ParserController
                 foreach ($bonuses as $name_bonus => $index_bonuses) {
                     $bonus = pq($row)->find('td')->eq($index_bonuses)->text();
 
-                    if ( ! $bonus || $bonus != "-") {
+                    if (  $bonus && $bonus != "-") {
                         $bonus = preg_replace("/[^\d]/", "", $bonus);
                         $data['bonuses'][$name_bonus][$level] = $bonus;
                     }
