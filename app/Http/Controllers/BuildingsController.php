@@ -12,6 +12,7 @@ namespace App\Http\Controllers;
 use App\DB\Buildings;
 use App\Helpers\FlashHelper;
 use App\Helpers\ParserHelper;
+use Illuminate\Support\Facades\Storage;
 
 class BuildingsController extends ParserController
 {
@@ -19,7 +20,7 @@ class BuildingsController extends ParserController
 
     public function getIndex()
     {
-        $buildings = [];
+        $buildings = Buildings::all();
 
         \View::share('buildings', $buildings);
         \View::share('file_path', $this->getFilePath(self::FILE_NAME));
@@ -49,7 +50,12 @@ class BuildingsController extends ParserController
             }
         }
 
-        $buildings = [];
+        $buildings = Buildings::all();
+
+        if ($buildings && ! $buildings->isEmpty()) {
+            $buildings_json = $buildings->toJson();
+            Storage::disk('public_import')->put(self::FILE_NAME, $buildings_json);
+        }
         \View::share('buildings', $buildings);
         \View::share('file_path', $this->getFilePath(self::FILE_NAME));
         FlashHelper::info('POST INDEX PARSE');

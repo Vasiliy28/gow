@@ -12,38 +12,22 @@
             <tr>
                 <th>#</th>
                 <th width="180px">title</th>
-                <th width="100px">event</th>
-                <th width="100px">slot</th>
-                <th width="270px">boostname</th>
+                <th width="100px">images</th>
+
             </tr>
             </thead>
             <tbody>
                 @foreach($buildings as $building)
                     <tr>
                         <td>{{$building->id}}</td>
-                        <td>{{$building->title }}
-                            <img src="{{$building->images}}">
-                        </td>
-                        <td>{{$building->event}}</td>
-                        <td>{{$building->slot}}</td>
+                        <td>{{$building->title}}</td>
                         <td>
-                            <ul>
-                                @foreach($building->boostname as $name)
-                                    <li>{{$name}}</li>
-                                @endforeach
-                            </ul>
+                            @foreach($building->images as $src)
+                                <img src="{{$src}}" alt="">
+                            @endforeach
                         </td>
-                        @foreach($building->levels as $level)
-                            <?php $level = explode(",", $level)?>
-                            <td>
-                                <ul class="level">
-                                    @foreach($level as $item)
-                                        <li>{{$item}}</li>
-                                    @endforeach
-                                </ul>
-                            </td>
-                        @endforeach
                     </tr>
+
                 @endforeach
             </tbody>
         </table>
